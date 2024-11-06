@@ -23,11 +23,12 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 
 class OpenStreetMapFragment : Fragment(), Marker.OnMarkerClickListener {
-
+    private val LOG_TAG = "OpenStreetMapFragment"
+    private val uarkGeopoint = GeoPoint(36.06883687344105, -94.17485782552014)
     private lateinit var mMap: MapView
     private lateinit var mLocationOverlay: MyLocationNewOverlay
     private lateinit var mCompassOverlay: CompassOverlay
-    private var curLocation = GeoPoint(34.74, -92.28)
+    private var curLocation = uarkGeopoint
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +46,7 @@ class OpenStreetMapFragment : Fragment(), Marker.OnMarkerClickListener {
 
         setupMapOptions()
         val mapController = mMap.controller
-        mapController.setZoom(3.1)
+        mapController.setZoom(6)
         changeCenterLocation(curLocation)
         return root
     }
@@ -111,8 +112,6 @@ class OpenStreetMapFragment : Fragment(), Marker.OnMarkerClickListener {
         curLocation = geoPoint
         val mapController = mMap.controller
         mapController.setCenter(curLocation);
-
-
     }
 
     fun addMarker(geoPoint: GeoPoint, id: Int) {
