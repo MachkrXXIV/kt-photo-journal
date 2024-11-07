@@ -23,6 +23,10 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 
 class OpenStreetMapFragment : Fragment(), Marker.OnMarkerClickListener {
+    // TODO: import RoomWithView Database and change it to GeoPhoto
+    // TODO: dateTimeFormater
+    // TODO: clicking camera button should add marker to map
+    // TODO: use id of GeoPhoto for marker
     private val LOG_TAG = "OpenStreetMapFragment"
     private val uarkGeopoint = GeoPoint(36.06883687344105, -94.17485782552014)
     private lateinit var mMap: MapView
@@ -46,7 +50,7 @@ class OpenStreetMapFragment : Fragment(), Marker.OnMarkerClickListener {
 
         setupMapOptions()
         val mapController = mMap.controller
-        mapController.setZoom(6)
+        mapController.setZoom(6.0)
         changeCenterLocation(curLocation)
         return root
     }
@@ -109,6 +113,7 @@ class OpenStreetMapFragment : Fragment(), Marker.OnMarkerClickListener {
     }
 
     fun changeCenterLocation(geoPoint: GeoPoint) {
+        Log.d(LOG_TAG, "Changing center location to $geoPoint from $curLocation")
         curLocation = geoPoint
         val mapController = mMap.controller
         mapController.setCenter(curLocation);

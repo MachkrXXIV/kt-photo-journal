@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -44,6 +45,11 @@ class MainActivity : AppCompatActivity() {
     //Member object to hold onto locationCallback object
     //Needed to remove requests for location updates
     private lateinit var mLocationCallback: LocationCallback
+
+    //ViewModel object to communicate between Activity and repository
+    private val todoListViewModel: GeoPhotoViewModel by viewModels {
+        GeoPhotoViewModelFactory((application as PhotoJournalApplication).repository)
+    }
 
     val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
