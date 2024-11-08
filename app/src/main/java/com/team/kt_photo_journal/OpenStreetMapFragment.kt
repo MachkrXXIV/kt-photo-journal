@@ -1,5 +1,6 @@
 package com.team.kt_photo_journal
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -50,7 +51,7 @@ class OpenStreetMapFragment : Fragment(), Marker.OnMarkerClickListener {
 
         setupMapOptions()
         val mapController = mMap.controller
-        mapController.setZoom(6.0)
+        mapController.setZoom(12.0)
         changeCenterLocation(curLocation)
         return root
     }
@@ -129,7 +130,6 @@ class OpenStreetMapFragment : Fragment(), Marker.OnMarkerClickListener {
 
         startMarker.icon = ResourcesCompat.getDrawable(resources, R.drawable.map_pin_small, null)
         mMap.getOverlays().add(startMarker)
-
     }
 
     fun clearMarkers() {
@@ -148,8 +148,18 @@ class OpenStreetMapFragment : Fragment(), Marker.OnMarkerClickListener {
     }
 
     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
-        marker?.id?.let { Log.d("OpenStreetMapFragment", it) }
+        marker?.id?.let { Log.d("OpenStreetMapFragment", it)
+            launchGeoPhotoActivity(it.toInt())
+        }
         return true
+    }
+
+    private fun launchGeoPhotoActivity(id: Int?) {
+        // onMarkerClick
+        Log.d(LOG_TAG, "Launching new task activity with id: $id")
+        val secondActivityIntent = Intent(requireActivity(), GeoPhotoActivity::class.java)
+        secondActivityIntent.putExtra("EXTRA_ID", id)
+        this.startActivity(secondActivityIntent)
     }
 
     companion object {

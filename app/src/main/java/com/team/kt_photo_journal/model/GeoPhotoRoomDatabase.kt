@@ -1,6 +1,7 @@
 package com.team.kt_photo_journal.model
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -11,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
-// Annotates class to be a Room Database with a table (entity) of the Word class
+// Annotates class to be a Room Database with a table (entity) of the GeoPhoto class
 @Database(entities = [GeoPhoto::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 public abstract class GeoPhotoRoomDatabase : RoomDatabase() {
@@ -27,6 +28,7 @@ public abstract class GeoPhotoRoomDatabase : RoomDatabase() {
         fun getDatabase(context: Context, scope:CoroutineScope): GeoPhotoRoomDatabase {
             // if the INSTANCE is not null, then return it,
             // if it is, then create the database
+            Log.d("GeoPhotoRoomDatabase", "Getting GeoPhotoRoomDatabase")
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
@@ -55,12 +57,13 @@ public abstract class GeoPhotoRoomDatabase : RoomDatabase() {
 
         suspend fun populateDatabase(geoPhotoDao: GeoPhotoDao) {
             // Delete all content here.
+            Log.d("GeoPhotoRoomDatabase", "Populating GeoPhotoRoomDatabase")
             geoPhotoDao.deleteAll()
 
             // Add sample geoPhotos
-            var geoPhoto = GeoPhoto(1,"Hello","Description",1, 2, LocalDateTime.now())
+            var geoPhoto = GeoPhoto(1,"Hello","Description",36.068900, -94.174800, LocalDateTime.now())
             geoPhotoDao.insert(geoPhoto)
-            geoPhoto = GeoPhoto(2,"World","Description",2, 4, LocalDateTime.now())
+            geoPhoto = GeoPhoto(2,"World","Description",36.068750, -94.174950, LocalDateTime.now())
             geoPhotoDao.insert(geoPhoto)
         }
     }

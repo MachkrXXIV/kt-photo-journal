@@ -10,7 +10,7 @@ data class GeoPhoto(
     @PrimaryKey(autoGenerate = true) val id: Int?,
     @ColumnInfo(name = "filePath") val filepath: String,
     @ColumnInfo(name = "description") val description: String,
-    @ColumnInfo(name = "latitude") var latitude: Long,
-    @ColumnInfo(name = "longitude") val longitude: Long,
+    @ColumnInfo(name = "latitude") var latitude: Double,
+    @ColumnInfo(name = "longitude") val longitude: Double,
     @ColumnInfo(name = "timestamp") val dueDate: LocalDateTime
 )

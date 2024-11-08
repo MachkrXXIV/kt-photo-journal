@@ -9,7 +9,7 @@ import com.team.kt_photo_journal.model.GeoPhoto
 import com.team.kt_photo_journal.model.GeoPhotoRepository
 import kotlinx.coroutines.launch
 
-class GeoPhotoViewModel(private val repository: GeoPhotoRepository) : ViewModel() {
+class PhotoJournalViewModel(private val repository: GeoPhotoRepository) : ViewModel() {
 
     // Using LiveData and caching what allWords returns has several benefits:
     // - We can put an observer on the data (instead of polling for changes) and only update the
@@ -35,9 +35,9 @@ class GeoPhotoViewModel(private val repository: GeoPhotoRepository) : ViewModel(
 
 class GeoPhotoViewModelFactory(private val repository: GeoPhotoRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(GeoPhotoViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(PhotoJournalViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return GeoPhotoViewModel(repository) as T
+            return PhotoJournalViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
