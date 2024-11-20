@@ -61,9 +61,9 @@ public abstract class GeoPhotoRoomDatabase : RoomDatabase() {
             geoPhotoDao.deleteAll()
 
             // Add sample geoPhotos
-            var geoPhoto = GeoPhoto(1,"Hello","Description",36.068900, -94.174800, LocalDateTime.now())
+            var geoPhoto = GeoPhoto(1,"","Description",36.068900, -94.174800, LocalDateTime.now())
             geoPhotoDao.insert(geoPhoto)
-            geoPhoto = GeoPhoto(2,"World","Description",36.068750, -94.174950, LocalDateTime.now())
+            geoPhoto = GeoPhoto(2,"","Description",36.068750, -94.174950, LocalDateTime.now())
             geoPhotoDao.insert(geoPhoto)
         }
     }

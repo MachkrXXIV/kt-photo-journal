@@ -31,6 +31,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".GeoPhotoActivity"
+            android:exported="true">
+        </activity>
         <provider
             android:authorities="com.team.kt_photo_journal.fileprovider"
             android:name="androidx.core.content.FileProvider"

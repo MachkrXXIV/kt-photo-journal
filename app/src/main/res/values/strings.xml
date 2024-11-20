@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">kt-photo-journal</string>
     <string name="camera">Activate camera</string>
+    <string name="description">Description</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="timestamp">Timestamp</string>
+    <string name="save">Save</string>
 </resources>

@@ -33,7 +33,7 @@ class PhotoJournalViewModel(private val repository: GeoPhotoRepository) : ViewMo
     }
 }
 
-class GeoPhotoViewModelFactory(private val repository: GeoPhotoRepository) : ViewModelProvider.Factory {
+class PhotoJournalViewModelFactory(private val repository: GeoPhotoRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PhotoJournalViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

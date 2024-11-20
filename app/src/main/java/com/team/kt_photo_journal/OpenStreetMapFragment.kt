@@ -149,6 +149,7 @@ class OpenStreetMapFragment : Fragment(), Marker.OnMarkerClickListener {
 
     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
         marker?.id?.let { Log.d("OpenStreetMapFragment", it)
+            Log.d("OpenStreetMapFragment", "Clicking on marker id: $it")
             launchGeoPhotoActivity(it.toInt())
         }
         return true
@@ -156,7 +157,7 @@ class OpenStreetMapFragment : Fragment(), Marker.OnMarkerClickListener {
 
     private fun launchGeoPhotoActivity(id: Int?) {
         // onMarkerClick
-        Log.d(LOG_TAG, "Launching new task activity with id: $id")
+        Log.d(LOG_TAG, "Launching marker on map with id: $id")
         val secondActivityIntent = Intent(requireActivity(), GeoPhotoActivity::class.java)
         secondActivityIntent.putExtra("EXTRA_ID", id)
         this.startActivity(secondActivityIntent)

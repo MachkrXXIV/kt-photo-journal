@@ -7,19 +7,20 @@
 
     <ImageView
         android:id="@+id/photo"
-        android:layout_width="360dp"
-        android:layout_height="540dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintBottom_toTopOf="@id/description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <EditText
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:hint="@string/description"
+        android:inputType="textAutoComplete"
         app:layout_constraintTop_toBottomOf="@+id/photo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -28,6 +29,7 @@
         android:id="@+id/latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/latitude"
         app:layout_constraintTop_toBottomOf="@+id/description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -36,6 +38,7 @@
         android:id="@+id/longitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/longitude"
         app:layout_constraintTop_toBottomOf="@+id/latitude"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -44,7 +47,20 @@
         android:id="@+id/timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/timestamp"
         app:layout_constraintTop_toBottomOf="@+id/longitude"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timestamp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

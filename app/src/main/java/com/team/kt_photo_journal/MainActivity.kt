@@ -31,6 +31,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.team.kt_photo_journal.model.GeoPhoto
 import com.team.kt_photo_journal.util.LocationUtilCallback
 import com.team.kt_photo_journal.util.createLocationCallback
 import com.team.kt_photo_journal.util.createLocationRequest
@@ -39,7 +40,9 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
 import java.io.File
 import java.io.OutputStream
+import java.io.Serializable
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -68,21 +71,30 @@ class MainActivity : AppCompatActivity() {
 
     //ViewModel object to communicate between Activity and repository
     private val photoJournalViewModel: PhotoJournalViewModel by viewModels {
-        GeoPhotoViewModelFactory((application as PhotoJournalApplication).repository)
+        PhotoJournalViewModelFactory((application as PhotoJournalApplication).repository)
     }
 
     // camera
     var currentPhotoPath = ""
-    lateinit var imageView: ImageView
     val takePictureResultLauncher = registerForActivityResult(ActivityResultContracts
         .StartActivityForResult()){
             result: ActivityResult ->
         if(result.resultCode == Activity.RESULT_CANCELED){
             Log.d(LOG_TAG,"Picture Intent Cancelled")
         }else{
-            setPic()
+            // just pass data through intents
+            // save stuff to database in GeoPhotoActivity
+            val geoPhoto = GeoPhoto(
+                id = -1,
+                latitude = mCurrentLocation.latitude,
+                description = "Enter a description",
+                longitude = mCurrentLocation.longitude,
+                filepath = currentPhotoPath,
+                timestamp = LocalDateTime.now()
+            )
             galleryAddPic(currentPhotoPath)
-            launchGeoPhotoActivity()
+//            photoJournalViewModel.insert(geoPhoto)
+            launchNewGeoPhotoActivity()
             Log.d(LOG_TAG,"Picture Successfully taken at $currentPhotoPath")
         }
 
@@ -138,7 +150,12 @@ class MainActivity : AppCompatActivity() {
         checkForLocationPermission()
         photoJournalViewModel.allGeoPhotos.observe(this, Observer {
             Log.d("MainActivity", "GeoPhotos: $it")
+            it.forEach { geoPhoto ->
+                val geoPoint = GeoPoint(geoPhoto.value.latitude, geoPhoto.value.longitude)
+                mapsFragment.addMarker(geoPoint, geoPhoto.value.id!!)
+            }
         })
+
     }
 
     private fun checkForLocationPermission(){
@@ -220,32 +237,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setPic() {
-        val targetW: Int = imageView.getWidth()
-
-        // Get the dimensions of the bitmap
-        val bmOptions = BitmapFactory.Options()
-        bmOptions.inJustDecodeBounds = true
-        BitmapFactory.decodeFile(currentPhotoPath, bmOptions)
-        val photoW = bmOptions.outWidth
-        val photoH = bmOptions.outHeight
-        val photoRatio:Double = (photoH.toDouble())/(photoW.toDouble())
-        val targetH: Int = (targetW * photoRatio).roundToInt()
-        // Determine how much to scale down the image
-        val scaleFactor = Math.max(1, Math.min(photoW / targetW, photoH / targetH))
-
-
-        bmOptions.inJustDecodeBounds = false
-        bmOptions.inSampleSize = scaleFactor
-        val bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions)
-        imageView.setImageBitmap(bitmap)
-    }
-
-    private fun launchGeoPhotoActivity(id: Int?) {
-        // onMarkerClick
-        Log.d(LOG_TAG, "Launching new task activity with id: $id")
+    private fun launchNewGeoPhotoActivity(id: Int = -1) {
+        Log.d(LOG_TAG, "Launching new GeoPhoto Activity")
         val secondActivityIntent = Intent(this, GeoPhotoActivity::class.java)
         secondActivityIntent.putExtra("EXTRA_ID", id)
+        secondActivityIntent.putExtra("EXTRA_LATITUDE", mCurrentLocation.latitude)
+        secondActivityIntent.putExtra("EXTRA_LONGITUDE", mCurrentLocation.longitude)
+        secondActivityIntent.putExtra("EXTRA_FILEPATH", currentPhotoPath)
+//        secondActivityIntent.putExtra("EXTRA_TIMESTAMP", LocalDateTime.now().toString())
         this.startActivity(secondActivityIntent)
     }
 
@@ -271,7 +270,6 @@ class MainActivity : AppCompatActivity() {
         val bitmap = BitmapFactory.decodeFile(currentPhotoPath)
 
         fos?.use { bitmap.compress(Bitmap.CompressFormat.JPEG, 70, it) }
-
         contentValues.clear()
         contentValues.put(MediaStore.Video.Media.IS_PENDING, 0)
         imageUri?.let { contentResolver.update(it, contentValues, null, null) }
